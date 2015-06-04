@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+
 /**
  *  DBCameraView delegate protocol
  */
@@ -106,6 +108,17 @@
  *  Tells the delegate when the camera must be dismissed
  */
 - (void) dismissCamera:(id)cameraViewController;
+
+
+
+/**
+ * Access error delegate methods
+ */
+
+- (void)camera:(id)cameraViewController didFailCameraWithStatus:(AVAuthorizationStatus)authorizationStatus;
+- (void)camera:(id)cameraViewController didFailPickerWithStatus:(ALAuthorizationStatus)authorizationStatus;
+- (void)didFailCameraWithNoPhoto:(id)cameraViewController;
+
 @end
 
 /**

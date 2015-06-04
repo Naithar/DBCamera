@@ -355,7 +355,8 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
 
 - (void) openLibrary
 {
-    if ( [ALAssetsLibrary authorizationStatus] !=  ALAuthorizationStatusDenied ) {
+    ALAuthorizationStatus authStatus = [ALAssetsLibrary authorizationStatus];
+    if (authStatus == ALAuthorizationStatusAuthorized) {
         [UIView animateWithDuration:.3 animations:^{
             [self.view setAlpha:0];
             [self.view setTransform:CGAffineTransformMakeScale(.8, .8)];
@@ -371,8 +372,20 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
             [self.containerDelegate switchFromController:self toController:library];
         }];
     } else {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:DBCameraLocalizedStrings(@"pickerimage.nopolicy") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+            if ( [weakSelf.delegate respondsToSelector:@selector(camera:didFailPickerWithStatus:)] ) {
+                [weakSelf.delegate camera:weakSelf
+                  didFailPickerWithStatus:authStatus];
+            }
+            else {
+                [[[UIAlertView alloc]
+                  initWithTitle:DBCameraLocalizedStrings(@"general.error.title")
+                  message:DBCameraLocalizedStrings(@"pickerimage.nopolicy")
+                  delegate:nil
+                  cancelButtonTitle:@"OK"
+                  otherButtonTitles:nil, nil] show];
+            }
         });
     }
 }
@@ -387,21 +400,20 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
         switch (authStatus) {
             case AVAuthorizationStatusDenied:
             case AVAuthorizationStatusRestricted: {
-                //            __weak typeof(self) weakSelf = self;
-                //            dispatch_async(dispatch_get_main_queue(), ^{
-                //                if ( [weakSelf.delegate respondsToSelector:@selector(camera:didReceivedCameraAccessError:)] ) {
-                //                    [weakSelf.delegate camera:self didReceivedCameraAccessError:YES];
-                //                }
-                //                else {
-                [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title")
-                                            message:DBCameraLocalizedStrings(@"cameraimage.nopolicy")
-                                           delegate:nil
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil, nil] show];
-                //                }
-                //            });
+                __weak typeof(self) weakSelf = self;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ( [weakSelf.delegate respondsToSelector:@selector(camera:didFailCameraWithStatus:)] ) {
+                        [weakSelf.delegate camera:weakSelf didFailCameraWithStatus:authStatus];
+                    }
+                    else {
+                        [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title")
+                                                    message:DBCameraLocalizedStrings(@"cameraimage.nopolicy")
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil, nil] show];
+                    }
+                });
             } return;
-                
             case AVAuthorizationStatusNotDetermined:
                 [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
                 return;

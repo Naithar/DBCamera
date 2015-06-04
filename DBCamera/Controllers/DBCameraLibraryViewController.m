@@ -186,8 +186,19 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
                     [pageViewControllerBlock.view setAlpha:1];
                 }];
             } else {
+                __weak typeof(self) weakSelf = self;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:DBCameraLocalizedStrings(@"pickerimage.nophoto") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+                    if ( [weakSelf.delegate respondsToSelector:@selector(didFailCameraWithNoPhoto:)] ) {
+                        [weakSelf.delegate didFailCameraWithNoPhoto:weakSelf];
+                    }
+                    else {
+                        [[[UIAlertView alloc]
+                          initWithTitle:DBCameraLocalizedStrings(@"general.error.title")
+                          message:DBCameraLocalizedStrings(@"pickerimage.nophoto")
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
+                    }
                 });
             }
         }
