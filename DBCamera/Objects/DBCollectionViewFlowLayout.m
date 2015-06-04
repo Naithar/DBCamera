@@ -14,7 +14,10 @@
 {
     self = [super init];
     if ( self ) {
-        [self setItemSize:(CGSize){ 106, 106 }];
+        
+        CGFloat height = floor([UIScreen mainScreen].bounds.size.width / 3 - 1);
+        
+        [self setItemSize:(CGSize){ height, height }];
         [self setScrollDirection:UICollectionViewScrollDirectionVertical];
         [self setSectionInset:UIEdgeInsetsZero];
         [self setMinimumLineSpacing:1];
