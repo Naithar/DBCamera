@@ -119,4 +119,8 @@
     _defaultCameraViewController = nil;
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

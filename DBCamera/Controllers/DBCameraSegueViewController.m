@@ -277,7 +277,7 @@ static const CGSize kFilterCellSize = { 75, 90 };
         [_useButton setTitle:[DBCameraLocalizedStrings(@"button.use") uppercaseString] forState:UIControlStateNormal];
         [_useButton.titleLabel sizeToFit];
         [_useButton sizeToFit];
-        [_useButton setFrame:(CGRect){ CGRectGetWidth(self.view.frame) - (CGRectGetWidth(_useButton.frame) + buttonMargin), 0, CGRectGetWidth(_useButton.frame) + buttonMargin, 60 }];
+        [_useButton setFrame:(CGRect){ CGRectGetWidth(self.view.frame) - (CGRectGetWidth(_useButton.frame) + buttonMargin), 10, CGRectGetWidth(_useButton.frame) + buttonMargin, 60 }];
         [_useButton addTarget:self action:@selector(saveImage) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -291,7 +291,7 @@ static const CGSize kFilterCellSize = { 75, 90 };
         [_retakeButton setTitle:[DBCameraLocalizedStrings(@"button.retake") uppercaseString] forState:UIControlStateNormal];
         [_retakeButton.titleLabel sizeToFit];
         [_retakeButton sizeToFit];
-        [_retakeButton setFrame:(CGRect){ 0, 0, CGRectGetWidth(_retakeButton.frame) + buttonMargin, 60 }];
+        [_retakeButton setFrame:(CGRect){ 0, 10, CGRectGetWidth(_retakeButton.frame) + buttonMargin, 60 }];
         [_retakeButton addTarget:self action:@selector(retakeImage) forControlEvents:UIControlEventTouchUpInside];
     }
     
