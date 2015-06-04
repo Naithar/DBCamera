@@ -6,13 +6,13 @@
   Copyright (c) 2014 PSSD - Daniele Bogo. All rights reserved.
 */
 
-"button.use" = "Использовать";
-"button.retake" = "Переснять";
+"button.use" = "Принять";
+"button.retake" = "Назад";
 
 "general.error.title" = "Внимание";
 "general.button.cancel" = "Отмена";
 
-"pickerimage.nopolicy" = "Пожалуйста, предоставьте права для доступа к вашей Фото Библиотеке. Проверить параметры доступа можно в Настройки > Конфиденциальность > Фотографии";
+"pickerimage.nopolicy" = "Пожалуйста, предоставьте права для доступа к вашей Фото библиотеке. Проверить параметры доступа можно в Настройки > Конфиденциальность > Фотографии";
 "pickerimage.nophoto" = "В вашей Библиотеке отсутствуют изображения";
 
 "pagecontrol.text" = "%i из %i";
@@ -20,5 +20,5 @@
 "cropmode.title" = "Соотношение сторон";
 "cropmode.square" = "Квадрат";
 
-"cameraimage.nopolicy" = "Please enable the permissions in order to use your Camera. Check your permissions in Settings > Privacy > Camera";
-"cameraimage.noconnection" = "Could not connect to camera. Please check your permissions in Settings > Privacy > Camera";
+"cameraimage.nopolicy" = "Пожалуйста, предоставьте права для доступа к вашей камере. Проверить параметры доступа можно в Настройки > Конфиденциальность > Камера";
+"cameraimage.noconnection" = "Невозможно получить доступ к камере. Проверить параметры доступа можно в Настройки > Конфиденциальность > Камера";
