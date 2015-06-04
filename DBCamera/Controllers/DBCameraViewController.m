@@ -338,7 +338,7 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
 - (void) captureImageFailedWithError:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+        [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
     });
 }
 
@@ -372,7 +372,7 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
         }];
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:DBCameraLocalizedStrings(@"pickerimage.nopolicy") delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+            [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:DBCameraLocalizedStrings(@"pickerimage.nopolicy") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
         });
     }
 }
@@ -381,29 +381,39 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
 
 - (void) cameraViewStartRecording
 {
+    
+    if (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0) {
+        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        switch (authStatus) {
+            case AVAuthorizationStatusDenied:
+            case AVAuthorizationStatusRestricted: {
+                //            __weak typeof(self) weakSelf = self;
+                //            dispatch_async(dispatch_get_main_queue(), ^{
+                //                if ( [weakSelf.delegate respondsToSelector:@selector(camera:didReceivedCameraAccessError:)] ) {
+                //                    [weakSelf.delegate camera:self didReceivedCameraAccessError:YES];
+                //                }
+                //                else {
+                [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title")
+                                            message:DBCameraLocalizedStrings(@"cameraimage.nopolicy")
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil, nil] show];
+                //                }
+                //            });
+            } return;
+                
+            case AVAuthorizationStatusNotDetermined:
+                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
+                return;
+            default:
+                break;
+        }
+    }
+    
     if ( _processingPhoto )
         return;
 
     _processingPhoto = YES;
-
-    if (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0) {
-        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-
-        if (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted) {
-            [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title")
-                                        message:DBCameraLocalizedStrings(@"cameraimage.nopolicy")
-                                       delegate:nil
-                              cancelButtonTitle:@"Ok"
-                              otherButtonTitles:nil, nil] show];
-
-            return;
-        }
-        else if (status == AVAuthorizationStatusNotDetermined) {
-            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:nil];
-
-            return;
-        }
-    }
 
     [self.cameraManager captureImageForDeviceOrientation:_deviceOrientation];
 }

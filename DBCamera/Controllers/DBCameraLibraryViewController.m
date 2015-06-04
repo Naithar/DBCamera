@@ -187,7 +187,7 @@ NSLocalizedStringFromTable(key, @"DBCamera", nil)
                 }];
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:DBCameraLocalizedStrings(@"pickerimage.nophoto") delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+                    [[[UIAlertView alloc] initWithTitle:DBCameraLocalizedStrings(@"general.error.title") message:DBCameraLocalizedStrings(@"pickerimage.nophoto") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
                 });
             }
         }
